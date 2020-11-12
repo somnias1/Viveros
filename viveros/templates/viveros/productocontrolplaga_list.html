@@ -1,0 +1,23 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+  <h1>Lista de Productos de Control de Plaga</h1>
+  {% if productocontrolplaga_list %}
+  <ul>
+    {% for productocontrolplaga in productocontrolplaga_list %}
+      <li>
+          {{ productocontrolplaga.nombre_producto_control }}
+         (<a href="{% url 'viveros:productocontrolplaga_update' productocontrolplaga.ICA %}">Actualizar</a> |
+          <a href="{% url 'viveros:productocontrolplaga_delete' productocontrolplaga.ICA %}">Eliminar</a>)
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>No hay productos de control de plagas guardados</p>
+  {% endif %}
+  <p><a href="{% url 'viveros:productocontrolplaga_create' %}">Crear un producto de control de plaga</a></p>
+  <p>
+    <a href="{% url 'viveros:all' %}">Volver a los viveros</a> |
+    <a href="{% url 'viveros:productocontrol_list' %}">Volver al menú de productos de control</a>
+  </p>
+{% endblock %}

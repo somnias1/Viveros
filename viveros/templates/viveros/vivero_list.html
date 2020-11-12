@@ -1,0 +1,36 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+  <h1>Lista de viveros</h1>
+  {% if vivero_list %}
+  <ul>
+    {% for vivero in vivero_list %}
+      <li>
+          {{ vivero.nombre_vivero }} ({{ vivero.productor.nombre_1}} {{ vivero.productor.apellido_1}})
+          (<a href="{% url 'viveros:vivero_update' vivero.IdAs %}">Actualizar información del vivero</a> |
+          <a href="{% url 'viveros:vivero_delete' vivero.IdAs %}">Eliminar el vivero</a>) <br/>
+          (Planta sembrada: {{ vivero.planta }}) (Municipio: {{ vivero.municipio }}) (Departamento: {{ vivero.departamento }})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>No hay viveros creados</p>
+  {% endif %}
+  <p>
+    {% if productor_count > 0 %}
+      <a href="{% url 'viveros:vivero_create' %}">Crear un vivero</a>
+    {% else %}
+      Por favor cree al menos un productor antes de crear un vivero
+    {% endif %}
+  </p>
+  <p>
+  <a href="{% url 'viveros:productor_list' %}">Ver productores</a> ({{ productor_count }}) |
+    <a href="{% url 'viveros:productor_create' %}">Crear un productor</a>
+  </p>
+  <p>
+  <a href="{% url 'viveros:productocontrol_list' %}">Ver Productos de control </a>
+  </p>
+  <p>
+  <a href="{% url 'viveros:labor_list' %}">Ver Labores </a>
+  </p>
+{% endblock %}

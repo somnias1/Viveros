@@ -1,0 +1,24 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+  <h1>Lista de Labores</h1>
+  {% if labor_list %}
+  <ul>
+    {% for labor in labor_list %}
+      <li>
+          {{ labor.IdAs }} (Fecha: {{ labor.fecha }})
+         (<a href="{% url 'viveros:labor_update' labor.id %}">Actualizar</a> |
+          <a href="{% url 'viveros:labor_delete' labor.id %}">Eliminar</a>)
+
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>No hay labores guardadas</p>
+  {% endif %}
+  <p><a href="{% url 'viveros:labor_create' %}">Crear una labor</a></p>
+  <p>
+    <a href="{% url 'viveros:all' %}">Volver a los viveros</a> |
+    <a href="{% url 'viveros:productocontrol_list' %}">Volver al menú de productos de control</a>
+  </p>
+{% endblock %}

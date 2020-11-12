@@ -1,0 +1,23 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+  <h1>Lista de Productos de Control de Hongo</h1>
+  {% if productocontrolhongo_list %}
+  <ul>
+    {% for productocontrolhongo in productocontrolhongo_list %}
+      <li>
+          {{ productocontrolhongo.nombre_producto_control }}
+         (<a href="{% url 'viveros:productocontrolhongo_update' productocontrolhongo.ICA %}">Actualizar</a> |
+          <a href="{% url 'viveros:productocontrolhongo_delete' productocontrolhongo.ICA %}">Eliminar</a>)
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>No hay productos de control de hongos guardados</p>
+  {% endif %}
+  <p><a href="{% url 'viveros:productocontrolhongo_create' %}">Crear un producto de control de hongo</a></p>
+  <p>
+    <a href="{% url 'viveros:all' %}">Volver a los viveros</a> |
+    <a href="{% url 'viveros:productocontrol_list' %}">Volver al menú de productos de control</a>
+  </p>
+{% endblock %}

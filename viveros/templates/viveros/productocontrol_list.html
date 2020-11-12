@@ -1,0 +1,30 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+  <h1>Menu de Productos de Control</h1>
+  <!--{% if productocontrol_list %}
+  <ul>
+    {% for productocontrol in productocontrol_list %}
+      <li>
+          {{ productocontrol.nombre_producto_control }}
+         (<a href="{% url 'viveros:productocontrol_update' productocontrol.ICA %}">Actualizar</a> |
+          <a href="{% url 'viveros:productocontrol_delete' productocontrol.ICA %}">Eliminar</a>)
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>No hay productos de control guardados</p>
+  {% endif %} -->
+  <p>
+      <ul>
+          <li><a href="{% url 'viveros:productocontrolhongo_list' %}">Ir a los productos de control de hongos</a></li>
+          <li><a href="{% url 'viveros:productocontrolplaga_list' %}">Ir a los productos de control de plagas</a></li>
+          <li><a href="{% url 'viveros:productocontrolfertilizante_list' %}">Ir a los productos de control de fertilizante</a></li>
+      </ul>
+
+  </p>
+
+  <p>
+    <a href="{% url 'viveros:all' %}">Volver a los viveros</a>
+  </p>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+
+<h1>Borrar Producto de Control</h1>
+
+<p>Está seguro que desea eliminar el producto de control: {{ productocontrol }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Si, borrar.">
+  <input type="submit" onclick="window.location='{% url 'viveros:all' %}' ; return false;" value="Cancelar">
+</form>
+
+{% endblock %}

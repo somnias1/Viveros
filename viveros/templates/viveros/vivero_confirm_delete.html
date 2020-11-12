@@ -1,0 +1,15 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+
+<h1>Eliminar Vivero</h1>
+
+<p>Desea eliminar el vivero: {{ vivero }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Si, borrar.">
+  <input type="submit" onclick="window.location='{% url 'viveros:all' %}' ; return false;" value="Cancelar">
+</form>
+
+{% endblock %}

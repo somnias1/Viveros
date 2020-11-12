@@ -1,0 +1,23 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+  <h1>Lista de Productos de Control de Fertilizante</h1>
+  {% if productocontrolfertilizante_list %}
+  <ul>
+    {% for productocontrolfertilizante in productocontrolfertilizante_list %}
+      <li>
+          {{ productocontrolfertilizante.nombre_producto_control }}
+         (<a href="{% url 'viveros:productocontrolfertilizante_update' productocontrolfertilizante.ICA %}">Actualizar</a> |
+          <a href="{% url 'viveros:productocontrolfertilizante_delete' productocontrolfertilizante.ICA %}">Eliminar</a>)
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>No hay productos de control de fertilizante guardados</p>
+  {% endif %}
+  <p><a href="{% url 'viveros:productocontrolfertilizante_create' %}">Crear un producto de control de fertilizante</a></p>
+  <p>
+    <a href="{% url 'viveros:all' %}">Volver a los viveros</a> |
+    <a href="{% url 'viveros:productocontrol_list' %}">Volver al menú de productos de control</a>
+  </p>
+{% endblock %}
