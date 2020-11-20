@@ -6,21 +6,46 @@ from django.views import View
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.contrib.humanize.templatetags.humanize import naturaltime
+from django.db.models import Q
+from ads.utils import dump_queries
 
 class AdListView(OwnerListView):
     model = Ad
     template_name = "ads/ad_list.html"
 
     def get(self, request) :
-        ad_list = Ad.objects.all()
         favorites = list()
-        if request.user.is_authenticated:
+        #ad_list = Ad.objects.all()
+        #Nuevo
+        strval =  request.GET.get("search", False)
+        if strval :
+            query = Q(title__contains=strval)
+            query.add(Q(text__contains=strval), Q.OR)
+            ad_list = Ad.objects.filter(query).select_related().order_by('-updated_at')[:10]
+            #rows = request.user.favorite_ads.values('id')
+            #favorites = [ row['id'] for row in rows ]
+        #
+        else:
+            ad_list = Ad.objects.all().order_by('-updated_at')[:10]
+            #rows = request.user.favorite_ads.values('id')
+            #favorites = [ row['id'] for row in rows ]
+
+        #Antiguo
+        """if request.user.is_authenticated:
             # rows = [{'id': 2}, {'id': 4} ... ]  (A list of rows)
             rows = request.user.favorite_ads.values('id')
             # favorites = [2, 4, ...] using list comprehension
-            favorites = [ row['id'] for row in rows ]
+            favorites = [ row['id'] for row in rows ]"""
+        #Antiguo
+
+        for obj in ad_list:
+            obj.natural_updated = naturaltime(obj.updated_at)
+
         ctx = {'ad_list' : ad_list, 'favorites': favorites}
-        return render(request, self.template_name, ctx)
+        retval=render(request, self.template_name, ctx)
+        dump_queries()
+        return retval;
 
 
 class AdDetailView(OwnerDetailView):
