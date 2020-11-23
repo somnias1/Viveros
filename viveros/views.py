@@ -4,7 +4,7 @@ from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from viveros.models import Productor, Vivero, ProductoControl, ProductoControlHongo, ProductoControlPlaga, ProductoControlFertilizante, Labor
+from viveros.models import Productor, Vivero, ProductoControl, ProductoControlHongo, ProductoControlPlaga, ProductoControlFertilizante, Labor, Empleado
 
 # Create your views here.
 
@@ -184,3 +184,20 @@ class LaborDelete(LoginRequiredMixin, DeleteView):
     model = Labor
     fields = '__all__'
     success_url = reverse_lazy('viveros:labor_list')
+
+##########Registro
+
+class EmpleadoCreate(LoginRequiredMixin, CreateView):
+    model = Empleado
+    fields = '__all__'
+    success_url = reverse_lazy('viveros:labor_list')
+
+from django.urls import reverse_lazy
+from . import forms
+
+class SignUp(CreateView):
+    form_class = forms.UserCreateForm
+    success_url = reverse_lazy('viveros:all')
+    template_name = 'accounts/signup.html'
+
+

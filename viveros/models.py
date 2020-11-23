@@ -1,11 +1,10 @@
 from django.db import models
 from django.core.validators import MinLengthValidator, MaxLengthValidator
-from datetime import date
+from django.contrib import auth
 
 class Productor(models.Model):
-
     cedula = models.PositiveIntegerField(
-            primary_key=True
+            primary_key=True,
             )
 
     nombre_1 = models.CharField(
@@ -32,7 +31,6 @@ class Productor(models.Model):
 
     def __str__(self):
         return str(self.cedula)
-
 
 class Vivero(models.Model):
     IdAs = models.CharField(
@@ -94,7 +92,17 @@ class Labor(models.Model):
     producto_fertilizante = models.ForeignKey('ProductoControlFertilizante', on_delete=models.RESTRICT, null=True, blank=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
+class Empleado(Productor):
+    correo2 = models.EmailField(max_length=254, blank=False, default="correo@ejemplo.com", unique=True)
+
+    def __str__(self):
+        return str(self.cedula)
+
+class User(auth.models.User,auth.models.PermissionsMixin):
+
+    def __str__(self):
+        return "@{}".format(self.username)
 
 

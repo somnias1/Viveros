@@ -11,3 +11,4 @@ admin.site.register(ProductoControlHongo)
 admin.site.register(ProductoControlPlaga)
 admin.site.register(ProductoControlFertilizante)
 admin.site.register(Labor)
+
