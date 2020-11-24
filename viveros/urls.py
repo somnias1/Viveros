@@ -41,6 +41,6 @@ urlpatterns = [
     path('lab/<str:pk>/update/', views.LaborUpdate.as_view(), name='labor_update'),
     path('lab/<str:pk>/delete/', views.LaborDelete.as_view(), name='labor_delete'),
 
-    path('empleado/create/', views.EmpleadoCreate.as_view(), name='empleado_create'),
+    #path('empleado/create/', views.EmpleadoCreate.as_view(), name='empleado_create'),
     path('empl/create/', views.SignUp.as_view(), name="empleado_create")
 ]

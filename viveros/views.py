@@ -1,13 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-
-from viveros.models import Productor, Vivero, ProductoControl, ProductoControlHongo, ProductoControlPlaga, ProductoControlFertilizante, Labor, Empleado
+from viveros.models import Productor, Vivero, ProductoControl, ProductoControlHongo, ProductoControlPlaga, ProductoControlFertilizante, Labor#, Empleado
 
 # Create your views here.
-
 
 class MainView(LoginRequiredMixin, View):
     def get(self, request):
@@ -24,40 +22,44 @@ class ProductorView(LoginRequiredMixin, View):
         ctx = {'productor_list': prod}
         return render(request, 'viveros/productor_list.html', ctx)
 
-class ProductorCreate(LoginRequiredMixin, CreateView):
+class ProductorCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'viveros.add_productor'
     model = Productor
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
 
-class ProductorUpdate(LoginRequiredMixin, UpdateView):
+class ProductorUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Productor
+    permission_required = 'viveros.change_productor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
-
-class ProductorDelete(LoginRequiredMixin, DeleteView):
+class ProductorDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Productor
+    permission_required = 'viveros.delete_productor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
 
 ##########CRUD Vivero
-
-class ViveroCreate(LoginRequiredMixin, CreateView):
+#@staff_member_required
+class ViveroCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'viveros.add_vivero'
     model = Vivero
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
 
-class ViveroUpdate(LoginRequiredMixin, UpdateView):
+class ViveroUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = 'viveros.change_vivero'
     model = Vivero
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
-
-class ViveroDelete(LoginRequiredMixin, DeleteView):
+class ViveroDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Vivero
+    permission_required = 'viveros.delete_vivero'
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
@@ -69,20 +71,21 @@ class ProductoControlView(LoginRequiredMixin, View):
         ctx = {'productocontrol_list': prodctrl}
         return render(request, 'viveros/productocontrol_list.html', ctx)
 
-class ProductoControlCreate(LoginRequiredMixin, CreateView):
+class ProductoControlCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControl
+    permission_required = 'viveros.add_producto_control'
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
-
-class ProductoControlUpdate(LoginRequiredMixin, UpdateView):
+class ProductoControlUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProductoControl
+    permission_required = 'viveros.change_producto_control'
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
-
-class ProductoControlDelete(LoginRequiredMixin, DeleteView):
+class ProductoControlDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProductoControl
+    permission_required = 'viveros.delete_producto_control'
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
@@ -94,20 +97,22 @@ class ProductoControlHongoView(LoginRequiredMixin, View):
         ctx = {'productocontrolhongo_list': prodctrl}
         return render(request, 'viveros/productocontrolhongo_list.html', ctx)
 
-class ProductoControlHongoCreate(LoginRequiredMixin, CreateView):
+class ProductoControlHongoCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControlHongo
+    permission_required = 'viveros.add_productocontrolhongo'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolhongo_list')
 
 
-class ProductoControlHongoUpdate(LoginRequiredMixin, UpdateView):
+class ProductoControlHongoUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProductoControlHongo
+    permission_required = 'viveros.change_productocontrolhongo'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolhongo_list')
 
-
-class ProductoControlHongoDelete(LoginRequiredMixin, DeleteView):
+class ProductoControlHongoDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProductoControlHongo
+    permission_required = 'viveros.delete_productocontrolhongo'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolhongo_list')
 
@@ -119,20 +124,22 @@ class ProductoControlPlagaView(LoginRequiredMixin, View):
         ctx = {'productocontrolplaga_list': prodctrl}
         return render(request, 'viveros/productocontrolplaga_list.html', ctx)
 
-class ProductoControlPlagaCreate(LoginRequiredMixin, CreateView):
+class ProductoControlPlagaCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControlPlaga
+    permission_required = 'viveros.add_productocontrolplaga'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolplaga_list')
 
 
-class ProductoControlPlagaUpdate(LoginRequiredMixin, UpdateView):
+class ProductoControlPlagaUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProductoControlPlaga
+    permission_required = 'viveros.change_productocontrolplaga'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolplaga_list')
 
-
-class ProductoControlPlagaDelete(LoginRequiredMixin, DeleteView):
+class ProductoControlPlagaDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProductoControlPlaga
+    permission_required = 'viveros.delete_productocontrolplaga'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolplaga_list')
 
@@ -144,20 +151,22 @@ class ProductoControlFertilizanteView(LoginRequiredMixin, View):
         ctx = {'productocontrolfertilizante_list': prodctrl}
         return render(request, 'viveros/productocontrolfertilizante_list.html', ctx)
 
-class ProductoControlFertilizanteCreate(LoginRequiredMixin, CreateView):
+class ProductoControlFertilizanteCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControlFertilizante
+    permission_required = 'viveros.add_productocontrolfertilizante'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolfertilizante_list')
 
 
-class ProductoControlFertilizanteUpdate(LoginRequiredMixin, UpdateView):
+class ProductoControlFertilizanteUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProductoControlFertilizante
+    permission_required = 'viveros.change_productocontrolfertilizante'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolfertilizante_list')
 
-
-class ProductoControlFertilizanteDelete(LoginRequiredMixin, DeleteView):
+class ProductoControlFertilizanteDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProductoControlFertilizante
+    permission_required = 'viveros.delete_productocontrolfertilizante'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolfertilizante_list')
 
@@ -168,34 +177,36 @@ class LaborView(LoginRequiredMixin, View):
         ctx = {'labor_list': lab}
         return render(request, 'viveros/labor_list.html', ctx)
 
-class LaborCreate(LoginRequiredMixin, CreateView):
+class LaborCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Labor
+    permission_required = 'viveros.add_labor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:labor_list')
 
-
-class LaborUpdate(LoginRequiredMixin, UpdateView):
+class LaborUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Labor
+    permission_required = 'viveros.change_labor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:labor_list')
 
-
-class LaborDelete(LoginRequiredMixin, DeleteView):
+class LaborDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Labor
+    permission_required = 'viveros.delete_labor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:labor_list')
 
 ##########Registro
-
+"""
 class EmpleadoCreate(LoginRequiredMixin, CreateView):
     model = Empleado
     fields = '__all__'
-    success_url = reverse_lazy('viveros:labor_list')
+    success_url = reverse_lazy('viveros:labor_list')"""
 
 from django.urls import reverse_lazy
 from . import forms
 
-class SignUp(CreateView):
+class SignUp(CreateView, PermissionRequiredMixin):
+    permission_required = 'auth.add_user'
     form_class = forms.UserCreateForm
     success_url = reverse_lazy('viveros:all')
     template_name = 'accounts/signup.html'

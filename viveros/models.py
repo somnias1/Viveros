@@ -94,15 +94,17 @@ class Labor(models.Model):
     def __str__(self):
         return str(self.id)
 
-class Empleado(Productor):
+"""class Empleado(Productor):
     correo2 = models.EmailField(max_length=254, blank=False, default="correo@ejemplo.com", unique=True)
 
     def __str__(self):
-        return str(self.cedula)
+        return str(self.cedula)"""
+from django.contrib.auth.models import Group
 
 class User(auth.models.User,auth.models.PermissionsMixin):
-
     def __str__(self):
+        empleados=Group.objects.get(name='Empleado')
+        empleados.user_set.add(self.id)
         return "@{}".format(self.username)
 
 
