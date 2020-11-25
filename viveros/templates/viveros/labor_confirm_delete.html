@@ -1,15 +1,14 @@
-{% extends "base_bootstrap.html" %}
 
+
+{% extends "base_menu.html" %}
 {% block content %}
-
 <h1>Borrar Labor</h1>
 
-<p>Está seguro que desea eliminar la labor: {{ labor }}?</p>
+<p>Está seguro que desea eliminar la labor seleccionada?</p>
 
 <form action="" method="POST">
   {% csrf_token %}
-  <input type="submit" value="Si, borrar.">
-  <input type="submit" onclick="window.location='{% url 'viveros:labor_list' %}' ; return false;" value="Cancelar">
+  <input type="submit" value="Si, borrar">
+  <input type="submit" value="Cancelar" onclick="window.location.href='{% url 'viveros:labor_list' %}';return false;">
 </form>
-
 {% endblock %}

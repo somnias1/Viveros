@@ -2,8 +2,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from viveros.models import Productor, Vivero, ProductoControl, ProductoControlHongo, ProductoControlPlaga, ProductoControlFertilizante, Labor#, Empleado
+from django.db.models import Q
+from ads.utils import dump_queries
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 # Create your views here.
 
@@ -41,6 +45,10 @@ class ProductorDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
 
+class ProductorDetail(DetailView, LoginRequiredMixin):
+    template_name = 'viveros/productor_detail.html'
+    model = Productor
+
 
 ##########CRUD Vivero
 #@staff_member_required
@@ -62,6 +70,10 @@ class ViveroDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     permission_required = 'viveros.delete_vivero'
     fields = '__all__'
     success_url = reverse_lazy('viveros:all')
+
+class ViveroDetail(DetailView, LoginRequiredMixin):
+    template_name = 'viveros/vivero_detail.html'
+    model = Vivero
 
 ##########CRUD Producto Control
 
@@ -116,6 +128,10 @@ class ProductoControlHongoDelete(LoginRequiredMixin, PermissionRequiredMixin, De
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolhongo_list')
 
+class ProductoControlHongoDetail(DetailView, LoginRequiredMixin):
+    template_name = 'viveros/productocontrolhongo_detail.html'
+    model = ProductoControlHongo
+
 ##########CRUD Producto Control Plaga
 
 class ProductoControlPlagaView(LoginRequiredMixin, View):
@@ -143,6 +159,10 @@ class ProductoControlPlagaDelete(LoginRequiredMixin, PermissionRequiredMixin, De
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolplaga_list')
 
+class ProductoControlPlagaDetail(DetailView, LoginRequiredMixin):
+    template_name = 'viveros/productocontrolplaga_detail.html'
+    model = ProductoControlPlaga
+
 ##########CRUD Producto Control Fertilizante
 
 class ProductoControlFertilizanteView(LoginRequiredMixin, View):
@@ -157,7 +177,6 @@ class ProductoControlFertilizanteCreate(LoginRequiredMixin, PermissionRequiredMi
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolfertilizante_list')
 
-
 class ProductoControlFertilizanteUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProductoControlFertilizante
     permission_required = 'viveros.change_productocontrolfertilizante'
@@ -170,12 +189,48 @@ class ProductoControlFertilizanteDelete(LoginRequiredMixin, PermissionRequiredMi
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolfertilizante_list')
 
+class ProductoControlFertilizanteDetail(DetailView, LoginRequiredMixin):
+    template_name = 'viveros/productocontrolfertilizante_detail.html'
+    model = ProductoControlFertilizante
+
 ##########CRUD Labor
 class LaborView(LoginRequiredMixin, View):
-    def get(self, request):
+    model = Labor
+    template_name = "viveros/labor_list.html"
+
+    def get(self, request) :
+        strval =  request.GET.get("search", False)
+        if strval :
+            query = Q(IdAs__nombre_vivero__icontains=strval)
+            #query.add(Q(producto_hongo__producto_hongo__icontains=strval), Q.OR)
+            labor_list = Labor.objects.filter(query).select_related()#.order_by('-fecha')[:10]
+            #rows = request.user.favorite_ads.values('id')
+            #favorites = [ row['id'] for row in rows ]
+        #
+        else:
+            labor_list = Labor.objects.all()#.order_by('-fecha')[:10]
+            #rows = request.user.favorite_ads.values('id')
+            #favorites = [ row['id'] for row in rows ]
+
+        #Antiguo
+        """if request.user.is_authenticated:
+            # rows = [{'id': 2}, {'id': 4} ... ]  (A list of rows)
+            rows = request.user.favorite_ads.values('id')
+            # favorites = [2, 4, ...] using list comprehension
+            favorites = [ row['id'] for row in rows ]"""
+        #Antiguo
+        """
+        for obj in labor_list:
+            obj.natural_updated = naturaltime(obj.fecha)"""
+
+        ctx = {'labor_list' : labor_list}
+        retval=render(request, self.template_name, ctx)
+        dump_queries()
+        return retval;
+    """def get(self, request):
         lab = Labor.objects.all()
         ctx = {'labor_list': lab}
-        return render(request, 'viveros/labor_list.html', ctx)
+        return render(request, 'viveros/labor_list.html', ctx)"""
 
 class LaborCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Labor
@@ -194,6 +249,10 @@ class LaborDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     permission_required = 'viveros.delete_labor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:labor_list')
+
+class LaborDetail(DetailView, LoginRequiredMixin):
+    template_name = 'viveros/labor_detail.html'
+    model = Labor
 
 ##########Registro
 """

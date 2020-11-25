@@ -15,6 +15,7 @@ urlpatterns = [
     path('productor/create/', views.ProductorCreate.as_view(), name='productor_create'),
     path('productor/<int:pk>/update/', views.ProductorUpdate.as_view(), name='productor_update'),
     path('productor/<int:pk>/delete/', views.ProductorDelete.as_view(), name='productor_delete'),
+    path('productor/<int:pk>/detail/', views.ProductorDetail.as_view(), name='productor_detail'),
     #Producto Control
     path('procontrol/', views.ProductoControlView.as_view(), name='productocontrol_list'),
     path('procontrol/create/', views.ProductoControlCreate.as_view(), name='productocontrol_create'),
@@ -40,6 +41,7 @@ urlpatterns = [
     path('lab/create/', views.LaborCreate.as_view(), name='labor_create'),
     path('lab/<str:pk>/update/', views.LaborUpdate.as_view(), name='labor_update'),
     path('lab/<str:pk>/delete/', views.LaborDelete.as_view(), name='labor_delete'),
+    path('lab/<str:pk>/detail/', views.LaborDetail.as_view(), name='labor_detail'),
 
     #path('empleado/create/', views.EmpleadoCreate.as_view(), name='empleado_create'),
     path('empl/create/', views.SignUp.as_view(), name="empleado_create")

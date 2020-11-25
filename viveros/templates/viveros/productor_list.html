@@ -8,7 +8,9 @@
       <li>
           {{ productor.nombre_1 }} {{ productor.apellido_1 }} ({{ productor.cedula }})
          (<a href="{% url 'viveros:productor_update' productor.cedula %}">Editar</a> |
-          <a href="{% url 'viveros:productor_delete' productor.cedula %}">Borrar</a>)
+          <a href="{% url 'viveros:productor_delete' productor.cedula %}">Borrar</a> |
+          <a href="{% url 'viveros:productor_detail' productor.cedula %}">Detalles</a>
+          )
       </li>
     {% endfor %}
   </ul>

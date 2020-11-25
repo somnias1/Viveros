@@ -8,23 +8,43 @@
     </div>
     <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
     <ul class="nav navbar-nav">
-      {% url 'ads' as ads %}
+      <!--{% url 'ads' as ads %}
       <li {% if request.get_full_path == ads %}class="active"{% endif %}>
-          <a href="{% url 'ads:all' %}">Ads</a></li>
+          <a href="{% url 'ads:all' %}">Ads</a></li>-->
 
       {% url 'viveros' as viveros %}
       <li {% if request.get_full_path == viveros %}class="active"{% endif %}>
           <a href="{% url 'viveros:all' %}">Viveros</a></li>
 
+      {% url 'productor' as productor %}
+      <li {% if request.get_full_path == productor %}class="active"{% endif %}>
+          <a href="{% url 'viveros:productor_list' %}">Productores</a></li>
+
+      {% url 'labor' as labor %}
+      <li {% if request.get_full_path == labor %}class="active"{% endif %}>
+          <a href="{% url 'viveros:labor_list' %}">Labores</a></li>
+
+      <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                <b class="caret"></b>
+            Productos de Control</a>
+            <ul class="dropdown-menu">
+                <li><a href="{% url 'viveros:productocontrolhongo_list' %}">Hongos</a></li>
+                <li><a href="{% url 'viveros:productocontrolplaga_list' %}">Plagas</a></li>
+                <li><a href="{% url 'viveros:productocontrolfertilizante_list' %}">Fertilizantes</a></li>
+            </ul>
+        </li>
+
     </ul>
     <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
         <li>
-        <a href="{% url 'ads:ad_create' %}">Create Ad</a>
+        <a href="{% url 'viveros:empleado_create' %}">Crear Empleado</a>
         </li>
         <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                 <img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b>
+                Bienvenido {{user}}
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{% url 'logout' %}?next={% url 'ads:all' %}">Logout</a></li>
@@ -32,7 +52,7 @@
         </li>
         {% else %}
         <li>
-        <a href="{% url 'login' %}?next={% url 'ads:all' %}">Login</a>
+        <a href="{% url 'login' %}?next={% url 'ads:all' %}">Iniciar sesión</a>
         </li>
         {% endif %}
     </ul>

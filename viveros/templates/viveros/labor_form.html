@@ -1,12 +1,13 @@
-{% extends "base_bootstrap.html" %}
-
+{% extends "base_menu.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
-  <form action="" method="post">
+<p>
+  <form action="" method="post" id="upload_form" enctype="multipart/form-data">
     {% csrf_token %}
-    <table>
-    {{ form.as_table }}
-    </table>
-    <input type="submit" onclick="alert('Operación completada');" value="Ingresar">
-    <input type="submit" onclick="window.location='{% url 'viveros:labor_list' %}' ; return false;" value="Cancelar">
+    {{ form|crispy }}
+    <input type="submit" value="Aceptar">
+    <input type="submit" value="Cancelar" onclick="window.location.href='{% url 'viveros:labor_list' %}';return false;">
   </form>
+</p>
+<!-- https://stackoverflow.com/questions/2472422/django-file-upload-size-limit -->
 {% endblock %}

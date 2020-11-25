@@ -1,25 +1,45 @@
-{% extends "base_bootstrap.html" %}
-
+{% extends "base_menu.html" %}
 {% block content %}
-  <h1>Lista de Labores</h1>
-  {% if labor_list %}
-  <ul>
-    {% for labor in labor_list %}
-      <li>
-          {{ labor.IdAs }} (Fecha: {{ labor.fecha }})
-         (<a href="{% url 'viveros:labor_update' labor.id %}">Actualizar</a> |
-          <a href="{% url 'viveros:labor_delete' labor.id %}">Eliminar</a>)
+<h1>Labores</h1>
 
-      </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-    <p>No hay labores guardadas</p>
-  {% endif %}
-  <p><a href="{% url 'viveros:labor_create' %}">Crear una labor</a></p>
-  <p>
-    <a href="{% url 'viveros:all' %}">Volver a los viveros</a> |
-    <a href="{% url 'viveros:productocontrol_list' %}">Volver al menú de productos de control</a> |
-    <a href="{% url 'viveros:empleado_create' %}">Crearss</a>
-  </p>
+<div style="float:right">
+<!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
+<form>
+  <input type="text" placeholder="Buscar..." name="search"
+  {% if search %} value="{{ search }}" {% endif %}
+  >
+  <button type="submit"><i class="fa fa-search"></i></button>
+<a href="{% url 'viveros:labor_list' %}"><i class="fa fa-undo"></i></a>
+</form>
+</div>
+
+<p>
+{% if labor_list %}
+<ul>
+  {% for labor in labor_list %}
+    <li>
+        <p>{{ labor.IdAs }} ({{labor.fecha}})</p>
+        (<a href="{% url 'viveros:labor_detail' labor.id %}">Detalles</a>
+        {% if user.is_staff %}
+        |
+        <a href="{% url 'viveros:labor_update' labor.id %}">Editar</a> |
+        <a href="{% url 'viveros:labor_delete' labor.id %}">Borrar</a>
+        {% endif %}
+        )
+    </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>No hay labores registradas</p>
+{% endif %}
+</p>
+<p>
+<a href="{% url 'viveros:labor_create' %}">Agregar una labor</a> |
+{% if user.is_authenticated %}
+<a href="{% url 'logout' %}?next={% url 'viveros:all' %}">Cerrar sesión</a>
+{% else %}
+<a href="{% url 'login' %}?next={% url 'viveros:all' %}">Iniciar sesión</a>
+{% endif %}
+</p>
+
 {% endblock %}
