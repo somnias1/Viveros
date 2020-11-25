@@ -36,6 +36,7 @@ urlpatterns = [
     path('procontrolfe/create/', views.ProductoControlFertilizanteCreate.as_view(), name='productocontrolfertilizante_create'),
     path('procontrolfe/<str:pk>/update/', views.ProductoControlFertilizanteUpdate.as_view(), name='productocontrolfertilizante_update'),
     path('procontrolfe/<str:pk>/delete/', views.ProductoControlFertilizanteDelete.as_view(), name='productocontrolfertilizante_delete'),
+    path('procontrolfe/<str:pk>/detail/', views.ProductoControlFertilizanteDetail.as_view(), name='productocontrolfertilizante_detail'),
     #Labor
     path('lab/', views.LaborView.as_view(), name='labor_list'),
     path('lab/create/', views.LaborCreate.as_view(), name='labor_create'),

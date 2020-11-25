@@ -11,9 +11,9 @@
 </span>
 <h1>{{ productocontrolfertilizante.nombre_producto_control }}</h1>
 <ul>
-    <li>ICA del producto de control:{{productocontrolfertilizante.ICA}}</li>
+    <li>ICA del producto de control: {{productocontrolfertilizante.ICA}}</li>
     <li>Frecuencia de aplicado en dias: {{productocontrolfertilizante.frecuencia}}</li>
     <li>Valor del producto: COP${{productocontrolfertilizante.valor}}</li>
 </ul>
-
+<input type="submit" value="Volver" onclick="window.location.href='{% url 'viveros:productocontrolfertilizante_list' %}';return false;">
 {% endblock %}

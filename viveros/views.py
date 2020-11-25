@@ -166,10 +166,21 @@ class ProductoControlPlagaDetail(DetailView, LoginRequiredMixin):
 ##########CRUD Producto Control Fertilizante
 
 class ProductoControlFertilizanteView(LoginRequiredMixin, View):
-    def get(self, request):
-        prodctrl = ProductoControlFertilizante.objects.all()
-        ctx = {'productocontrolfertilizante_list': prodctrl}
-        return render(request, 'viveros/productocontrolfertilizante_list.html', ctx)
+    model = ProductoControlFertilizante
+    template_name = "viveros/productocontrolfertilizante_list.html"
+
+    def get(self, request) :
+        strval =  request.GET.get("search", False)
+        if strval :
+            query = Q(nombre_producto_control__icontains=strval)
+            productocontrolfertilizante_list = ProductoControlFertilizante.objects.filter(query).select_related()
+        else:
+            productocontrolfertilizante_list = ProductoControlFertilizante.objects.all()
+
+        ctx = {'productocontrolfertilizante_list' : productocontrolfertilizante_list}
+        retval=render(request, self.template_name, ctx)
+        dump_queries()
+        return retval;
 
 class ProductoControlFertilizanteCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControlFertilizante
@@ -202,11 +213,7 @@ class LaborView(LoginRequiredMixin, View):
         strval =  request.GET.get("search", False)
         if strval :
             query = Q(IdAs__nombre_vivero__icontains=strval) | Q(producto_hongo__nombre_producto_control__icontains=strval) | Q(producto_plaga__nombre_producto_control__icontains=strval) | Q(producto_fertilizante__nombre_producto_control__icontains=strval)
-            #query.add(Q(producto_hongo__nombre_producto_control__icontains=strval))
-            #query.add(Q(producto_plaga__nombre_producto_control__icontains=strval))
-            #query.add(Q(producto_fertilizante__nombre_producto_control__icontains=strval))
             labor_list = Labor.objects.filter(query).select_related()
-        #
         else:
             labor_list = Labor.objects.all()#.order_by('-fecha')[:10]
 
