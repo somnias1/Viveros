@@ -1,19 +1,6 @@
 {% extends "base_menu.html" %}
 {% load humanize %} <!-- https://docs.djangoproject.com/en/3.0/ref/contrib/humanize -->
-{% block head %}
-<style>
-.overlay{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  display: none;
-  background-color: rgba(0,0,0,0.5); /*dim the background*/
-}
-</style>
-{% endblock %}
+
 {% block content %}
 
 <span style="float: right;">
@@ -26,9 +13,26 @@
 <ul>
     <li>Fecha de la labor:{{labor.fecha}}</li>
     <li>Detalles adicionales de la labor realizada: {{labor.descripcion}}</li>
-    <li>Producto aplicado para hongos: {{labor.producto_hongo}}</li>
-    <li>Producto aplicado para plagas: {{labor.producto_plaga}}</li>
-    <li>Producto aplicado para fertilizante: {{labor.producto_fertilizante}}</li>
+    <li>Producto aplicado para hongos:
+    {% if labor.producto_hongo %}
+    {{labor.producto_hongo}}
+    (siguiente aplicado: {{labor.producto_hongo.periodo_de_carencia }} dias a partir de la fecha)</li>
+    {% else %}
+    No aplica</li>
+    {% endif %}
+    <li>Producto aplicado para plagas:
+    {% if labor.producto_plaga %}
+    {{labor.producto_plaga}}
+    (siguiente aplicado: {{labor.producto_plaga.periodo_de_carencia }} dias a partir de la fecha)</li>
+    {% else %}
+    No aplica</li>
+    {% endif %}
+    <li>Producto aplicado para fertilizante:
+    {% if labor.producto_fertilizante %}
+    {{labor.producto_fertilizante}}</li>
+    {% else %}
+    No aplica</li>
+    {% endif %}
 </ul>
-
+<input type="submit" value="Volver" onclick="window.location.href='{% url 'viveros:labor_list' %}';return false;">
 {% endblock %}

@@ -201,36 +201,19 @@ class LaborView(LoginRequiredMixin, View):
     def get(self, request) :
         strval =  request.GET.get("search", False)
         if strval :
-            query = Q(IdAs__nombre_vivero__icontains=strval)
-            #query.add(Q(producto_hongo__producto_hongo__icontains=strval), Q.OR)
-            labor_list = Labor.objects.filter(query).select_related()#.order_by('-fecha')[:10]
-            #rows = request.user.favorite_ads.values('id')
-            #favorites = [ row['id'] for row in rows ]
+            query = Q(IdAs__nombre_vivero__icontains=strval) | Q(producto_hongo__nombre_producto_control__icontains=strval) | Q(producto_plaga__nombre_producto_control__icontains=strval) | Q(producto_fertilizante__nombre_producto_control__icontains=strval)
+            #query.add(Q(producto_hongo__nombre_producto_control__icontains=strval))
+            #query.add(Q(producto_plaga__nombre_producto_control__icontains=strval))
+            #query.add(Q(producto_fertilizante__nombre_producto_control__icontains=strval))
+            labor_list = Labor.objects.filter(query).select_related()
         #
         else:
             labor_list = Labor.objects.all()#.order_by('-fecha')[:10]
-            #rows = request.user.favorite_ads.values('id')
-            #favorites = [ row['id'] for row in rows ]
-
-        #Antiguo
-        """if request.user.is_authenticated:
-            # rows = [{'id': 2}, {'id': 4} ... ]  (A list of rows)
-            rows = request.user.favorite_ads.values('id')
-            # favorites = [2, 4, ...] using list comprehension
-            favorites = [ row['id'] for row in rows ]"""
-        #Antiguo
-        """
-        for obj in labor_list:
-            obj.natural_updated = naturaltime(obj.fecha)"""
 
         ctx = {'labor_list' : labor_list}
         retval=render(request, self.template_name, ctx)
         dump_queries()
         return retval;
-    """def get(self, request):
-        lab = Labor.objects.all()
-        ctx = {'labor_list': lab}
-        return render(request, 'viveros/labor_list.html', ctx)"""
 
 class LaborCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Labor
@@ -255,11 +238,6 @@ class LaborDetail(DetailView, LoginRequiredMixin):
     model = Labor
 
 ##########Registro
-"""
-class EmpleadoCreate(LoginRequiredMixin, CreateView):
-    model = Empleado
-    fields = '__all__'
-    success_url = reverse_lazy('viveros:labor_list')"""
 
 from django.urls import reverse_lazy
 from . import forms

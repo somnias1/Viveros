@@ -19,13 +19,12 @@
   {% for labor in labor_list %}
     <li>
         <p>{{ labor.IdAs }} ({{labor.fecha}})</p>
-        (<a href="{% url 'viveros:labor_detail' labor.id %}">Detalles</a>
+        ( <a href="{% url 'viveros:labor_detail' labor.id %}">Detalles</a>
         {% if user.is_staff %}
         |
         <a href="{% url 'viveros:labor_update' labor.id %}">Editar</a> |
         <a href="{% url 'viveros:labor_delete' labor.id %}">Borrar</a>
-        {% endif %}
-        )
+        {% endif %})
     </li>
   {% endfor %}
 </ul>
@@ -34,7 +33,9 @@
 {% endif %}
 </p>
 <p>
+{% if user.is_staff %}
 <a href="{% url 'viveros:labor_create' %}">Agregar una labor</a> |
+{% endif %}
 {% if user.is_authenticated %}
 <a href="{% url 'logout' %}?next={% url 'viveros:all' %}">Cerrar sesión</a>
 {% else %}
