@@ -1,3 +1,22 @@
-<h1>{{ productor.nombre_1 }}</h1>
-{{ productor.cedula }}
-{{ productor.correo }}
+{% extends "base_menu.html" %}
+{% load humanize %} <!-- https://docs.djangoproject.com/en/3.0/ref/contrib/humanize -->
+
+{% block content %}
+
+<span style="float: right;">
+{% if user.is_staff %}
+<a href="{% url 'viveros:productor_update' productor.cedula %}"><i class="fa fa-pencil"></i></a>
+<a href="{% url 'viveros:productor_delete' productor.cedula %}"><i class="fa fa-trash"></i></a>
+{% endif %}
+</span>
+<h1>{{ productor.cedula }}</h1>
+<ul>
+    <li>Primer nombre del productor: {{productor.nombre_1}}</li>
+    <li>Segundo nombre del productor: {{productor.nombre_2}}</li>
+    <li>Primer apellido del productor: {{productor.apellido_1}}</li>
+    <li>Segundo apellido del productor: {{productor.apellido_2}}</li>
+    <li>Correo de contacto: {{productor.correo}}</li>
+
+</ul>
+<input type="submit" value="Volver" onclick="window.location.href='{% url 'viveros:productor_list' %}';return false;">
+{% endblock %}

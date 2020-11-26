@@ -1,15 +1,12 @@
-{% extends "base_bootstrap.html" %}
-
+{% extends "base_menu.html" %}
 {% block content %}
+<h1>Borrar Vivero</h1>
 
-<h1>Borrar Productor</h1>
-
-<p>Está seguro que desea eliminar al productor: {{ productor.nombre_1 }} {{ productor.apellido_1 }}?</p>
+<p>Está seguro que desea eliminar el productor: {{productor.cedula}}?</p>
 
 <form action="" method="POST">
   {% csrf_token %}
   <input type="submit" value="Si, borrar">
-  <input type="submit" onclick="window.location='{% url 'viveros:vivero_list' %}' ; return false;" value="Cancelar">
+  <input type="submit" value="Cancelar" onclick="window.location.href='{% url 'viveros:productor_list' %}';return false;">
 </form>
-
 {% endblock %}

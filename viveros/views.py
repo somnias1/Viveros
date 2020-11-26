@@ -21,10 +21,21 @@ class MainView(LoginRequiredMixin, View):
 ##########CRUD Productor
 
 class ProductorView(LoginRequiredMixin, View):
-    def get(self, request):
-        prod = Productor.objects.all()
-        ctx = {'productor_list': prod}
-        return render(request, 'viveros/productor_list.html', ctx)
+    model = Productor
+    template_name = "viveros/productor_list.html"
+
+    def get(self, request) :
+        strval =  request.GET.get("search", False)
+        if strval :
+            query = Q(cedula__icontains=strval) | Q(nombre_1__icontains=strval) | Q(nombre_2__icontains=strval) | Q(apellido_1__icontains=strval) | Q(apellido_2__icontains=strval) | Q(correo__icontains=strval)
+            productor_list = Productor.objects.filter(query).select_related()
+        else:
+            productor_list = Productor.objects.all()
+
+        ctx = {'productor_list' : productor_list}
+        retval=render(request, self.template_name, ctx)
+        dump_queries()
+        return retval;
 
 class ProductorCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'viveros.add_productor'
