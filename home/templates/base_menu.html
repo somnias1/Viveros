@@ -47,12 +47,12 @@
                 Bienvenido {{user}}
             </a>
             <ul class="dropdown-menu">
-                <li><a href="{% url 'logout' %}?next={% url 'ads:all' %}">Logout</a></li>
+                <li><a href="{% url 'logout' %}?next={% url 'viveros:vivero_list' %}">Cerrar sesión</a></li>
             </ul>
         </li>
         {% else %}
         <li>
-        <a href="{% url 'login' %}?next={% url 'ads:all' %}">Iniciar sesión</a>
+        <a href="{% url 'login' %}?next={% url 'viveros:vivero_list' %}">Iniciar sesión</a>
         </li>
         {% endif %}
     </ul>

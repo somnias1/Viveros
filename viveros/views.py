@@ -8,6 +8,8 @@ from viveros.models import Productor, Vivero, ProductoControl, ProductoControlHo
 from django.db.models import Q
 from ads.utils import dump_queries
 from django.contrib.humanize.templatetags.humanize import naturaltime
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 
 # Create your views here.
 
@@ -37,24 +39,31 @@ class ProductorView(LoginRequiredMixin, View):
         dump_queries()
         return retval;
 
-class ProductorCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ProductorCreate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'viveros.add_productor'
     model = Productor
     fields = '__all__'
     success_url = reverse_lazy('viveros:productor_list')
+    success_message = 'Productor creado correctamente'
 
 
-class ProductorUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ProductorUpdate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Productor
     permission_required = 'viveros.change_productor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productor_list')
+    success_message = 'Productor actualizado correctamente'
 
-class ProductorDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProductorDelete(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Productor
     permission_required = 'viveros.delete_productor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productor_list')
+    success_message = 'Productor eliminado correctamente'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ProductorDelete, self).delete(request, *args, **kwargs)
 
 class ProductorDetail(DetailView, LoginRequiredMixin):
     template_name = 'viveros/productor_detail.html'
@@ -81,24 +90,31 @@ class ViveroView(LoginRequiredMixin, View):
         dump_queries()
         return retval;
 
-class ViveroCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ViveroCreate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'viveros.add_vivero'
     model = Vivero
     fields = '__all__'
     success_url = reverse_lazy('viveros:vivero_list')
+    success_message = 'Vivero creado correctamente'
 
 
-class ViveroUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ViveroUpdate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     permission_required = 'viveros.change_vivero'
     model = Vivero
     fields = '__all__'
     success_url = reverse_lazy('viveros:vivero_list')
+    success_message = 'Vivero actualizado correctamente'
 
-class ViveroDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ViveroDelete(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Vivero
     permission_required = 'viveros.delete_vivero'
     fields = '__all__'
     success_url = reverse_lazy('viveros:vivero_list')
+    success_message = 'Vivero eliminado correctamente'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ViveroDelete, self).delete(request, *args, **kwargs)
 
 class ViveroDetail(DetailView, LoginRequiredMixin):
     template_name = 'viveros/vivero_detail.html'
@@ -151,24 +167,31 @@ class ProductoControlHongoView(LoginRequiredMixin, View):
         dump_queries()
         return retval;
 
-class ProductoControlHongoCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ProductoControlHongoCreate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControlHongo
     permission_required = 'viveros.add_productocontrolhongo'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolhongo_list')
+    success_message = 'Producto de control de hongos creado correctamente'
 
 
-class ProductoControlHongoUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ProductoControlHongoUpdate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProductoControlHongo
     permission_required = 'viveros.change_productocontrolhongo'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolhongo_list')
+    success_message = 'Producto de control de hongos actualizado correctamente'
 
-class ProductoControlHongoDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProductoControlHongoDelete(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProductoControlHongo
     permission_required = 'viveros.delete_productocontrolhongo'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolhongo_list')
+    success_message = 'Producto de control de hongos borrado correctamente'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ProductoControlHongoDelete, self).delete(request, *args, **kwargs)
 
 class ProductoControlHongoDetail(DetailView, LoginRequiredMixin):
     template_name = 'viveros/productocontrolhongo_detail.html'
@@ -193,24 +216,31 @@ class ProductoControlPlagaView(LoginRequiredMixin, View):
         dump_queries()
         return retval;
 
-class ProductoControlPlagaCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ProductoControlPlagaCreate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControlPlaga
     permission_required = 'viveros.add_productocontrolplaga'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolplaga_list')
+    success_message = 'Producto de control de plagas creado correctamente'
 
 
-class ProductoControlPlagaUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ProductoControlPlagaUpdate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProductoControlPlaga
     permission_required = 'viveros.change_productocontrolplaga'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolplaga_list')
+    success_message = 'Producto de control de plagas actualizado correctamente'
 
-class ProductoControlPlagaDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProductoControlPlagaDelete(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProductoControlPlaga
     permission_required = 'viveros.delete_productocontrolplaga'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolplaga_list')
+    success_message = 'Producto de control de plagas eliminado correctamente'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ProductoControlPlagaDelete, self).delete(request, *args, **kwargs)
 
 class ProductoControlPlagaDetail(DetailView, LoginRequiredMixin):
     template_name = 'viveros/productocontrolplaga_detail.html'
@@ -235,23 +265,30 @@ class ProductoControlFertilizanteView(LoginRequiredMixin, View):
         dump_queries()
         return retval;
 
-class ProductoControlFertilizanteCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ProductoControlFertilizanteCreate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControlFertilizante
     permission_required = 'viveros.add_productocontrolfertilizante'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolfertilizante_list')
+    success_message = 'Producto de control fertilizante creado correctamente'
 
-class ProductoControlFertilizanteUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ProductoControlFertilizanteUpdate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProductoControlFertilizante
     permission_required = 'viveros.change_productocontrolfertilizante'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolfertilizante_list')
+    success_message = 'Producto de control fertilizante actualizado correctamente'
 
-class ProductoControlFertilizanteDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProductoControlFertilizanteDelete(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProductoControlFertilizante
     permission_required = 'viveros.delete_productocontrolfertilizante'
     fields = '__all__'
     success_url = reverse_lazy('viveros:productocontrolfertilizante_list')
+    success_message = 'Producto de control fertilizante eliminado correctamente'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ProductoControlFertilizanteDelete, self).delete(request, *args, **kwargs)
 
 class ProductoControlFertilizanteDetail(DetailView, LoginRequiredMixin):
     template_name = 'viveros/productocontrolfertilizante_detail.html'
@@ -275,23 +312,30 @@ class LaborView(LoginRequiredMixin, View):
         dump_queries()
         return retval;
 
-class LaborCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class LaborCreate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Labor
     permission_required = 'viveros.add_labor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:labor_list')
+    success_message = 'Labor creada correctamente'
 
-class LaborUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class LaborUpdate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Labor
     permission_required = 'viveros.change_labor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:labor_list')
+    success_message = 'Labor actualizada correctamente'
 
-class LaborDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class LaborDelete(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Labor
     permission_required = 'viveros.delete_labor'
     fields = '__all__'
     success_url = reverse_lazy('viveros:labor_list')
+    success_message = 'Labor borrada correctamente'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(LaborDelete, self).delete(request, *args, **kwargs)
 
 class LaborDetail(DetailView, LoginRequiredMixin):
     template_name = 'viveros/labor_detail.html'

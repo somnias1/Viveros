@@ -3,15 +3,14 @@
 {% block content %}
 
 {% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
+  <p>El usuario y la contraseña no coinciden. Por favor vuelva a intentar.</p>
 {% endif %}
 
 {% if next %}
   {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    <p>Usuario con permisos insuficientes. Por favor inicie sesión con un usuario con permisos suficientes.</p>
   {% else %}
-    <p>Please login to see this site.</p>
+    <p>Por favor inicie sesión para ver el sitio.</p>
   {% endif %}
 {% endif %}
 
@@ -20,7 +19,7 @@
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 {{ form|crispy }}
-<input type="submit" class="btn btn-primary" value="Login Locally" />
+<input type="submit" class="btn btn-primary" value="Iniciar sesión" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
@@ -28,7 +27,7 @@
 <hr/>
 <a class="btn btn-info" role="button" href="{% url 'social:begin' 'github' %}?next={{ next }}">
     <i class="fa fa-github" aria-hidden="true"></i>
-    Login with GitHub</a>
+    Iniciar sesión con GitHub</a>
 {% endif %}
 
 <!-- ROOT_URLCONF {{ settings.ROOT_URLCONF }} -->

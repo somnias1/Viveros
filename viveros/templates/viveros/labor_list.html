@@ -1,5 +1,16 @@
 {% extends "base_menu.html" %}
+{% if messages %}
+    <div class="col-lg-3 color03">
+        <ul class="messages">
+            {% for message in messages %}
+
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
 {% block content %}
+
+
 <h1>Labores</h1>
 
 <div style="float:right">
