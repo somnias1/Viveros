@@ -1,17 +1,12 @@
-<h2>Sign up Form</h2>
+{% extends "base_menu.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
 <form method="post">
   {% csrf_token %}
-  {% for field in form %}
-    <p>
-      {{ field.label_tag }}<br>
-      {{ field }}
-      {% if field.help_text %}
-        <small style="color: grey">{{ field.help_text }}</small>
-      {% endif %}
-      {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
-      {% endfor %}
-    </p>
-  {% endfor %}
-  <button type="submit">Sign up</button>
+  {{ form|crispy }}
+  <button type="submit">Crear</button>
+  <input type="submit" value="Cancelar" onclick="window.location.href='{% url 'viveros:vivero_list' %}';return false;">
 </form>
+{% endblock %}
+
+
