@@ -26,6 +26,7 @@ urlpatterns = [
     path('procontrolho/create/', views.ProductoControlHongoCreate.as_view(), name='productocontrolhongo_create'),
     path('procontrolho/<str:pk>/update/', views.ProductoControlHongoUpdate.as_view(), name='productocontrolhongo_update'),
     path('procontrolho/<str:pk>/delete/', views.ProductoControlHongoDelete.as_view(), name='productocontrolhongo_delete'),
+    path('procontrolho/<str:pk>/detail/', views.ProductoControlHongoDetail.as_view(), name='productocontrolhongo_detail'),
     #Plaga
     path('procontrolpl/', views.ProductoControlPlagaView.as_view(), name='productocontrolplaga_list'),
     path('procontrolpl/create/', views.ProductoControlPlagaCreate.as_view(), name='productocontrolplaga_create'),

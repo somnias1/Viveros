@@ -104,10 +104,21 @@ class ProductoControlDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteV
 ##########CRUD Producto Control Hongo
 
 class ProductoControlHongoView(LoginRequiredMixin, View):
-    def get(self, request):
-        prodctrl = ProductoControlHongo.objects.all()
-        ctx = {'productocontrolhongo_list': prodctrl}
-        return render(request, 'viveros/productocontrolhongo_list.html', ctx)
+    model = ProductoControlHongo
+    template_name = "viveros/productocontrolhongo_list.html"
+
+    def get(self, request) :
+        strval =  request.GET.get("search", False)
+        if strval :
+            query = Q(nombre_producto_control__icontains=strval) | Q(ICA__icontains=strval) | Q(nombre_hongo_afectado__icontains=strval)
+            productocontrolhongo_list = ProductoControlHongo.objects.filter(query).select_related()
+        else:
+            productocontrolhongo_list = ProductoControlHongo.objects.all()
+
+        ctx = {'productocontrolhongo_list' : productocontrolhongo_list}
+        retval=render(request, self.template_name, ctx)
+        dump_queries()
+        return retval;
 
 class ProductoControlHongoCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControlHongo

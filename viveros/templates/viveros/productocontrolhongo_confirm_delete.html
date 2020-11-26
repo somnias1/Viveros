@@ -1,8 +1,6 @@
-{% extends "base_bootstrap.html" %}
-
+{% extends "base_menu.html" %}
 {% block content %}
-
-<h1>Borrar Producto de Control de Hongo</h1>
+<h1>Borrar Producto de Control de Fertilizante</h1>
 
 <p>Está seguro que desea eliminar el producto de control de hongo: {{ productocontrolhongo }}?</p>
 
@@ -11,5 +9,4 @@
   <input type="submit" value="Si, borrar.">
   <input type="submit" onclick="window.location='{% url 'viveros:productocontrolhongo_list' %}' ; return false;" value="Cancelar">
 </form>
-
 {% endblock %}

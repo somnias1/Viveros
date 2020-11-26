@@ -1,0 +1,20 @@
+{% extends "base_menu.html" %}
+{% load humanize %} <!-- https://docs.djangoproject.com/en/3.0/ref/contrib/humanize -->
+
+{% block content %}
+
+<span style="float: right;">
+{% if user.is_staff %}
+<a href="{% url 'viveros:productocontrolhongo_update' productocontrolhongo.ICA %}"><i class="fa fa-pencil"></i></a>
+<a href="{% url 'viveros:productocontrolhongo_delete' productocontrolhongo.ICA %}"><i class="fa fa-trash"></i></a>
+{% endif %}
+</span>
+<h1>{{ productocontrolhongo.nombre_producto_control }}</h1>
+<ul>
+    <li>ICA del producto de control: {{productocontrolhongo.ICA}}</li>
+    <li>Frecuencia de aplicado en dias: {{productocontrolhongo.frecuencia}}</li>
+    <li>Valor del producto: COP${{productocontrolhongo.valor}}</li>
+    <li>Hongo afectado por el producto: {{productocontrolhongo.nombre_hongo_afectado}}</li>
+</ul>
+<input type="submit" value="Volver" onclick="window.location.href='{% url 'viveros:productocontrolhongo_list' %}';return false;">
+{% endblock %}
