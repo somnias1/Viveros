@@ -1,0 +1,22 @@
+{% extends "base_menu.html" %}
+{% load humanize %} <!-- https://docs.djangoproject.com/en/3.0/ref/contrib/humanize -->
+
+{% block content %}
+
+<span style="float: right;">
+{% if user.is_staff %}
+<a href="{% url 'viveros:vivero_update' vivero.IdAs %}"><i class="fa fa-pencil"></i></a>
+<a href="{% url 'viveros:vivero_delete' vivero.IdAs %}"><i class="fa fa-trash"></i></a>
+{% endif %}
+</span>
+<h1>{{ vivero.nombre_vivero }}</h1>
+<ul>
+    <li>Id Asignado del vivero: {{vivero.IdAs}}</li>
+    <li>Municipio del vivero: {{vivero.municipio}}</li>
+    <li>Departamento del vivero: {{vivero.departamento}}</li>
+    <li>Planta que contiene: {{vivero.planta}}</li>
+    <li>Productor encargado: {{vivero.productor.nombre_1}} {{vivero.productor.apellido_1}}</li>
+
+</ul>
+<input type="submit" value="Volver" onclick="window.location.href='{% url 'viveros:vivero_list' %}';return false;">
+{% endblock %}

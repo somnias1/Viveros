@@ -1,36 +1,46 @@
-{% extends "base_bootstrap.html" %}
-
+{% extends "base_menu.html" %}
 {% block content %}
-  <h1>Lista de viveros</h1>
-  {% if vivero_list %}
-  <ul>
-    {% for vivero in vivero_list %}
-      <li>
-          {{ vivero.nombre_vivero }} ({{ vivero.productor.nombre_1}} {{ vivero.productor.apellido_1}})
-          (<a href="{% url 'viveros:vivero_update' vivero.IdAs %}">Actualizar información del vivero</a> |
-          <a href="{% url 'viveros:vivero_delete' vivero.IdAs %}">Eliminar el vivero</a>) <br/>
-          (Planta sembrada: {{ vivero.planta }}) (Municipio: {{ vivero.municipio }}) (Departamento: {{ vivero.departamento }})
-      </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-    <p>No hay viveros creados</p>
-  {% endif %}
-  <p>
-    {% if productor_count > 0 %}
-      <a href="{% url 'viveros:vivero_create' %}">Crear un vivero</a>
-    {% else %}
-      Por favor cree al menos un productor antes de crear un vivero
-    {% endif %}
-  </p>
-  <p>
-  <a href="{% url 'viveros:productor_list' %}">Ver productores</a> ({{ productor_count }}) |
-    <a href="{% url 'viveros:productor_create' %}">Crear un productor</a>
-  </p>
-  <p>
-  <a href="{% url 'viveros:productocontrol_list' %}">Ver Productos de control </a>
-  </p>
-  <p>
-  <a href="{% url 'viveros:labor_list' %}">Ver Labores </a>
-  </p>
+<h1>Viveros</h1>
+
+<div style="float:right">
+<!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
+<form>
+  <input type="text" placeholder="Buscar..." name="search"
+  {% if search %} value="{{ search }}" {% endif %}
+  >
+  <button type="submit"><i class="fa fa-search"></i></button>
+<a href="{% url 'viveros:vivero_list' %}"><i class="fa fa-undo"></i></a>
+</form>
+</div>
+
+<p>
+{% if vivero_list %}
+<ul>
+  {% for vivero in vivero_list %}
+    <li>
+        <p>{{ vivero.nombre_vivero }}</p>
+        ( <a href="{% url 'viveros:vivero_detail' vivero.IdAs %}">Detalles</a>
+        {% if user.is_staff %}
+        |
+        <a href="{% url 'viveros:vivero_update' vivero.IdAs %}">Editar</a> |
+        <a href="{% url 'viveros:vivero_delete' vivero.IdAs %}">Borrar</a>
+        {% endif %})
+    </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>No hay labores registradas</p>
+{% endif %}
+</p>
+<p>
+{% if user.is_staff %}
+<a href="{% url 'viveros:vivero_create' %}">Agregar un vivero</a> |
+{% endif %}
+{% if user.is_authenticated %}
+<a href="{% url 'logout' %}?next={% url 'viveros:vivero_list' %}">Cerrar sesión</a>
+{% else %}
+<a href="{% url 'login' %}?next={% url 'viveros:vivero_list' %}">Iniciar sesión</a>
+{% endif %}
+</p>
+
 {% endblock %}

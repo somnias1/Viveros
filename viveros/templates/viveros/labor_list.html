@@ -37,9 +37,9 @@
 <a href="{% url 'viveros:labor_create' %}">Agregar una labor</a> |
 {% endif %}
 {% if user.is_authenticated %}
-<a href="{% url 'logout' %}?next={% url 'viveros:all' %}">Cerrar sesión</a>
+<a href="{% url 'logout' %}?next={% url 'viveros:vivero_list' %}">Cerrar sesión</a>
 {% else %}
-<a href="{% url 'login' %}?next={% url 'viveros:all' %}">Iniciar sesión</a>
+<a href="{% url 'login' %}?next={% url 'viveros:vivero_list' %}">Iniciar sesión</a>
 {% endif %}
 </p>
 

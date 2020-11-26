@@ -30,20 +30,20 @@ class ProductorCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'viveros.add_productor'
     model = Productor
     fields = '__all__'
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:productor_list')
 
 
 class ProductorUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Productor
     permission_required = 'viveros.change_productor'
     fields = '__all__'
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:productor_list')
 
 class ProductorDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Productor
     permission_required = 'viveros.delete_productor'
     fields = '__all__'
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:productor_list')
 
 class ProductorDetail(DetailView, LoginRequiredMixin):
     template_name = 'viveros/productor_detail.html'
@@ -52,28 +52,47 @@ class ProductorDetail(DetailView, LoginRequiredMixin):
 
 ##########CRUD Vivero
 #@staff_member_required
+
+class ViveroView(LoginRequiredMixin, View):
+    model = Vivero
+    template_name = "viveros/vivero_list.html"
+
+    def get(self, request) :
+        strval =  request.GET.get("search", False)
+        if strval :
+            query = Q(IdAs__icontains=strval) | Q(nombre_vivero__icontains=strval) | Q(municipio__icontains=strval) | Q(departamento__icontains=strval) | Q(planta__icontains=strval) | Q(productor__nombre_1__icontains=strval) | Q(productor__nombre_2__icontains=strval) | Q(productor__apellido_1__icontains=strval) | Q(productor__apellido_2__icontains=strval) | Q(productor__correo__icontains=strval)
+            vivero_list = Vivero.objects.filter(query).select_related()
+        else:
+            vivero_list = Vivero.objects.all()
+
+        ctx = {'vivero_list' : vivero_list}
+        retval=render(request, self.template_name, ctx)
+        dump_queries()
+        return retval;
+
 class ViveroCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'viveros.add_vivero'
     model = Vivero
     fields = '__all__'
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:vivero_list')
 
 
 class ViveroUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     permission_required = 'viveros.change_vivero'
     model = Vivero
     fields = '__all__'
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:vivero_list')
 
 class ViveroDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Vivero
     permission_required = 'viveros.delete_vivero'
     fields = '__all__'
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:vivero_list')
 
 class ViveroDetail(DetailView, LoginRequiredMixin):
     template_name = 'viveros/vivero_detail.html'
     model = Vivero
+
 
 ##########CRUD Producto Control
 
@@ -87,19 +106,20 @@ class ProductoControlCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateV
     model = ProductoControl
     permission_required = 'viveros.add_producto_control'
     fields = '__all__'
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:productocontrol_list')
 
 class ProductoControlUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProductoControl
     permission_required = 'viveros.change_producto_control'
     fields = '__all__'
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:productocontrol_list')
 
 class ProductoControlDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProductoControl
     permission_required = 'viveros.delete_producto_control'
     fields = '__all__'
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:productocontrol_list')
+
 
 ##########CRUD Producto Control Hongo
 
@@ -274,7 +294,7 @@ from . import forms
 class SignUp(CreateView, PermissionRequiredMixin):
     permission_required = 'auth.add_user'
     form_class = forms.UserCreateForm
-    success_url = reverse_lazy('viveros:all')
+    success_url = reverse_lazy('viveros:vivero_list')
     template_name = 'accounts/signup.html'
 
 

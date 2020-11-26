@@ -6,16 +6,17 @@ from django.views.generic import TemplateView
 app_name = 'viveros'
 urlpatterns = [
     #Vivero
-    path('', views.MainView.as_view(), name='all'),
-    path('main/create/', views.ViveroCreate.as_view(), name='vivero_create'),
-    path('main/<str:pk>/update/', views.ViveroUpdate.as_view(), name='vivero_update'),
-    path('main/<str:pk>/delete/', views.ViveroDelete.as_view(), name='vivero_delete'),
+    path('vivero/', views.ViveroView.as_view(), name='vivero_list'),
+    path('vivero/create/', views.ViveroCreate.as_view(), name='vivero_create'),
+    path('vivero/<str:pk>/update/', views.ViveroUpdate.as_view(), name='vivero_update'),
+    path('vivero/<str:pk>/delete/', views.ViveroDelete.as_view(), name='vivero_delete'),
+    path('vivero/<str:pk>/detail/', views.ViveroDetail.as_view(), name='vivero_detail'),
     #Productor
     path('productor/', views.ProductorView.as_view(), name='productor_list'),
     path('productor/create/', views.ProductorCreate.as_view(), name='productor_create'),
-    path('productor/<int:pk>/update/', views.ProductorUpdate.as_view(), name='productor_update'),
-    path('productor/<int:pk>/delete/', views.ProductorDelete.as_view(), name='productor_delete'),
-    path('productor/<int:pk>/detail/', views.ProductorDetail.as_view(), name='productor_detail'),
+    path('productor/<str:pk>/update/', views.ProductorUpdate.as_view(), name='productor_update'),
+    path('productor/<str:pk>/delete/', views.ProductorDelete.as_view(), name='productor_delete'),
+    path('productor/<str:pk>/detail/', views.ProductorDetail.as_view(), name='productor_detail'),
     #Producto Control
     path('procontrol/', views.ProductoControlView.as_view(), name='productocontrol_list'),
     path('procontrol/create/', views.ProductoControlCreate.as_view(), name='productocontrol_create'),

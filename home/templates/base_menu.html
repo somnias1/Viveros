@@ -14,7 +14,7 @@
 
       {% url 'viveros' as viveros %}
       <li {% if request.get_full_path == viveros %}class="active"{% endif %}>
-          <a href="{% url 'viveros:all' %}">Viveros</a></li>
+          <a href="{% url 'viveros:vivero_list' %}">Viveros</a></li>
 
       {% url 'productor' as productor %}
       <li {% if request.get_full_path == productor %}class="active"{% endif %}>
