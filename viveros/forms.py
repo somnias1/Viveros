@@ -16,13 +16,14 @@ class UserCreateForm(UserCreationForm):
     #surname = forms.CharField(max_length=20)
 
     class Meta:
-        fields = ('username','password1','password2')#'email','surname','password1','password2')
+        fields = ('first_name','last_name','username','password1','password2')#'email','surname','password1','password2')
         model = get_user_model()
 
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-
+        #self.fields['id'].label = 'Cédula'
         self.fields['username'].label = 'Correo'
+
         #self.fields['surname'].label = 'Surname'
         #self.fields['email'].label = 'Email Address'
 

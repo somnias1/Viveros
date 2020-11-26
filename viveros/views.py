@@ -135,10 +135,21 @@ class ProductoControlHongoDetail(DetailView, LoginRequiredMixin):
 ##########CRUD Producto Control Plaga
 
 class ProductoControlPlagaView(LoginRequiredMixin, View):
-    def get(self, request):
-        prodctrl = ProductoControlPlaga.objects.all()
-        ctx = {'productocontrolplaga_list': prodctrl}
-        return render(request, 'viveros/productocontrolplaga_list.html', ctx)
+    model = ProductoControlPlaga
+    template_name = "viveros/productocontrolplaga_list.html"
+
+    def get(self, request) :
+        strval =  request.GET.get("search", False)
+        if strval :
+            query = Q(nombre_producto_control__icontains=strval) | Q(ICA__icontains=strval)
+            productocontrolplaga_list = ProductoControlPlaga.objects.filter(query).select_related()
+        else:
+            productocontrolplaga_list = ProductoControlPlaga.objects.all()
+
+        ctx = {'productocontrolplaga_list' : productocontrolplaga_list}
+        retval=render(request, self.template_name, ctx)
+        dump_queries()
+        return retval;
 
 class ProductoControlPlagaCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProductoControlPlaga
@@ -172,7 +183,7 @@ class ProductoControlFertilizanteView(LoginRequiredMixin, View):
     def get(self, request) :
         strval =  request.GET.get("search", False)
         if strval :
-            query = Q(nombre_producto_control__icontains=strval)
+            query = Q(nombre_producto_control__icontains=strval) | Q(ICA__icontains=strval)
             productocontrolfertilizante_list = ProductoControlFertilizante.objects.filter(query).select_related()
         else:
             productocontrolfertilizante_list = ProductoControlFertilizante.objects.all()

@@ -1,23 +1,46 @@
-{% extends "base_bootstrap.html" %}
-
+{% extends "base_menu.html" %}
 {% block content %}
-  <h1>Lista de Productos de Control de Plaga</h1>
-  {% if productocontrolplaga_list %}
-  <ul>
-    {% for productocontrolplaga in productocontrolplaga_list %}
-      <li>
-          {{ productocontrolplaga.nombre_producto_control }}
-         (<a href="{% url 'viveros:productocontrolplaga_update' productocontrolplaga.ICA %}">Actualizar</a> |
-          <a href="{% url 'viveros:productocontrolplaga_delete' productocontrolplaga.ICA %}">Eliminar</a>)
-      </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-    <p>No hay productos de control de plagas guardados</p>
-  {% endif %}
-  <p><a href="{% url 'viveros:productocontrolplaga_create' %}">Crear un producto de control de plaga</a></p>
-  <p>
-    <a href="{% url 'viveros:all' %}">Volver a los viveros</a> |
-    <a href="{% url 'viveros:productocontrol_list' %}">Volver al menú de productos de control</a>
-  </p>
+<h1>Productos de Control Plagas</h1>
+
+<div style="float:right">
+<!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
+<form>
+  <input type="text" placeholder="Buscar..." name="search"
+  {% if search %} value="{{ search }}" {% endif %}
+  >
+  <button type="submit"><i class="fa fa-search"></i></button>
+<a href="{% url 'viveros:productocontrolplaga_list' %}"><i class="fa fa-undo"></i></a>
+</form>
+</div>
+
+<p>
+{% if productocontrolplaga_list %}
+<ul>
+  {% for productocontrolplaga in productocontrolplaga_list %}
+    <li>
+        <p>{{ productocontrolplaga.nombre_producto_control }} </p>
+        ( <a href="{% url 'viveros:productocontrolplaga_detail' productocontrolplaga.ICA %}">Detalles</a>
+        {% if user.is_staff %}
+        |
+        <a href="{% url 'viveros:productocontrolplaga_update' productocontrolplaga.ICA %}">Editar</a> |
+        <a href="{% url 'viveros:productocontrolplaga_delete' productocontrolplaga.ICA %}">Borrar</a>
+        {% endif %})
+    </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>No hay antiplagas registrados</p>
+{% endif %}
+</p>
+<p>
+{% if user.is_staff %}
+<a href="{% url 'viveros:productocontrolplaga_create' %}">Agregar un antiplagas</a> |
+{% endif %}
+{% if user.is_authenticated %}
+<a href="{% url 'logout' %}?next={% url 'viveros:all' %}">Cerrar sesión</a>
+{% else %}
+<a href="{% url 'login' %}?next={% url 'viveros:all' %}">Iniciar sesión</a>
+{% endif %}
+</p>
+
 {% endblock %}
