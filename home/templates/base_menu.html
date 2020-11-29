@@ -39,7 +39,9 @@
     <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
         <li>
+            {% if user.is_staff %}
         <a href="{% url 'viveros:empleado_create' %}">Crear Empleado</a>
+            {% endif %}
         </li>
         <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle">

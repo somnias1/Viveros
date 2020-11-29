@@ -10,6 +10,8 @@ from ads.utils import dump_queries
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+import csv
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -21,6 +23,16 @@ class MainView(LoginRequiredMixin, View):
         return render(request, 'viveros/vivero_list.html', ctx)
 
 ##########CRUD Productor
+def exporte_productores_csv(query):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="productores.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Cedula', 'Nombre 1', 'Nombre 2', 'Apellido 1', 'Apellido 2', 'Correo'])
+    prl = Productor.objects.filter(query).select_related().values_list('cedula', 'nombre_1', 'nombre_2', 'apellido_1', 'apellido_2', 'correo')
+    for pr in prl:
+        writer.writerow(pr)
+
+    return response
 
 class ProductorView(LoginRequiredMixin, View):
     model = Productor
@@ -28,16 +40,17 @@ class ProductorView(LoginRequiredMixin, View):
 
     def get(self, request) :
         strval =  request.GET.get("search", False)
+
         if strval :
             query = Q(cedula__icontains=strval) | Q(nombre_1__icontains=strval) | Q(nombre_2__icontains=strval) | Q(apellido_1__icontains=strval) | Q(apellido_2__icontains=strval) | Q(correo__icontains=strval)
-            productor_list = Productor.objects.filter(query).select_related()
+            productor_list = Productor.objects.filter(query).select_related()#.values_list()
+            #resp = exporte_productores_csv(query)
         else:
             productor_list = Productor.objects.all()
-
         ctx = {'productor_list' : productor_list}
         retval=render(request, self.template_name, ctx)
         dump_queries()
-        return retval;
+        return  retval#resp
 
 class ProductorCreate(SuccessMessageMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'viveros.add_productor'
@@ -347,7 +360,7 @@ from django.urls import reverse_lazy
 from . import forms
 
 class SignUp(CreateView, PermissionRequiredMixin):
-    permission_required = 'auth.add_user'
+    permission_required = 'viveros.delete_labor'
     form_class = forms.UserCreateForm
     success_url = reverse_lazy('viveros:vivero_list')
     template_name = 'accounts/signup.html'
