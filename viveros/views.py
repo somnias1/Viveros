@@ -6,8 +6,8 @@ from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from viveros.models import Productor, Vivero, ProductoControl, ProductoControlHongo, ProductoControlPlaga, ProductoControlFertilizante, Labor#, Empleado
 from django.db.models import Q
-from ads.utils import dump_queries
-from django.contrib.humanize.templatetags.humanize import naturaltime
+from viveros.utils import dump_queries
+#from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 import csv
