@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'social_django',
     'home.apps.HomeConfig',
-    'ads.apps.AdsConfig',
+    #'ads.apps.AdsConfig',
     'viveros.apps.ViverosConfig',
     #'unesco.apps.UnescoConfig',
 ]
