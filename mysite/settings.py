@@ -25,7 +25,7 @@ APP_NAME = 'Somnias'   # Add
 SECRET_KEY = 'g$iqqu&*mw4_sg3(#ld0sqaalxebel&168^yj%i&sgrw(fmn@w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'social_django',
     'home.apps.HomeConfig',
-    'ads.apps.AdsConfig',
+    #'ads.apps.AdsConfig',
     'viveros.apps.ViverosConfig',
     #'unesco.apps.UnescoConfig',
 ]
