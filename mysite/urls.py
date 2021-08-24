@@ -25,7 +25,7 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('', RedirectView.as_view(url='https://somnias.pythonanywhere.com/viveros/vivero/')),  # Change to ads.urls
     path('admin/', admin.site.urls),  # Keep
-    #path('ads/', include('ads.urls')),
+    path('ads/', include('ads.urls')),
     path('accounts/', include('django.contrib.auth.urls')),  # Keep
     path('viveros/', include('viveros.urls')),
     url(r'^oauth/', include('social_django.urls', namespace='social')),  # Keep
