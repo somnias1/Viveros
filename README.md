@@ -2,7 +2,7 @@
 
 Viveros es un aplicativo desarrollado en Django 
 
-##Módulos
+## Módulos
 
 La aplicación cuenta con los siguientes módulos:
 <ul>
@@ -15,7 +15,7 @@ La aplicación cuenta con los siguientes módulos:
 </ul>
 
 
-##Funcionalidades:
+## Funcionalidades:
 
 La funcionalidad prima de ésta aplicación se centra en la diferenciación de cuentas de usuario
 <ul>
