@@ -1,6 +1,6 @@
 # Viveros
 
-Viveros es un aplicativo desarrollado en Django 
+Viveros es un aplicativo desarrollado en Django 3.1
 
 ## Módulos
 
