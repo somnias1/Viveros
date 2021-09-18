@@ -1,188 +1,201 @@
 ========================
-    Recurso carros
+    Recurso Usuarios
 ========================
 
-Recurso POST
-------------
-    .. http:post:: /api/cars
+Recurso LOGIN
+-------------
 
-    Crea un carro
+    .. http:post:: /api/users/login/
 
-    * **Campos obligatorios**
+    Inicia sesión con credenciales de usuario
 
-        :number_plate: **(string)** Placa del carro
-        :model: **(string)** Modelo del carro
-        :branch: **(string)** Marca del carro
-        :usuario: **(int)** Id del propietario del carro
+    * **Campos olbigatorios**
+
+        :username: **(string)** Nombre de usuario
+        :password: **(string)** Contraseña del usuario
 
     * **Ejemplo de petición**
 
-        ..host:: http
+        .. host:: http
 
-            POST /api/cars
+            POST /api/users/login/
             Content-Type: json
 
             {
-                "number_plate": "NPE112",
-                "model": "2002",
-                "branch": "Chevrolet",
-                "usuario": 5
+                "username": "usuariosprueba",
+                "password": "usuariosprueba"
             }
 
-    * **Ejemplos de respuestas**
+    * **Ejemplos de respuesta** 
 
-        ..host:: http
+        .. host:: http
 
             HTTP/1.1 201 CREATED
             Content-Type: json
+
             {
-                "Success": "Carro creado"
+                "user": {
+                        "username": "usuariosabado3",
+                        "last_login": "2021-09-18",
+                        "email": "usuariosabado3@sabado.com",
+                        "fecha_registro": "2021-09-18",
+                        "fecha_nacimiento": "2005-01-31",
+                        "institucion_educativa": null,
+                        "idiomas": [],
+                        "ubicacion": null,
+                        "facebookurl": null,
+                        "twitterurl": null,
+                        "youtubeurl": null,
+                        "adulto": false,
+                        "foto_perfil": null
+                },
+                "access_token": "3076c51dad376c39984fef4e9ce9a8167e26c6f4"
             }
 
             HTTP/1.1 400 BAD_REQUEST
             Content-Type: json
+
             {
-                "errors": {
-                    "branch": [
-                        "required field"
-                    ],
-                    "model": [
-                        "required field"
-                    ],
-                    "number_plate": [
-                        "required field"
-                    ],
-                    "usuario": [
-                        "required field"
-                    ]
-                }
+                "non_field_errors": [
+                    "Credenciales incorrectas"
+                ]
             }
 
-Recurso GET
------------
+Recurso SIGNUP
+-------------
 
-    ..http:get:: /api/cars
+    .. http:post:: /api/users/signup/
 
-    Recibe los carros que hay registrados
+    Realiza el registro de un usuario, sólo pueden ser adultos tras iniciar sesión
+
+    * **Campos olbigatorios**
+
+        :username: **(string)** Nombre de usuario
+        :password: **(string)** Contraseña del usuario
+        :password_confirmation: **(string)** Verificación de la contraseña del usuario
+        :fecha_nacimiento: **(date)** Fecha de nacimiento del usuario en formato yyyy-mm-dd
+        :email: **(email)** Correo del usuario en formato usuario@organizacion.tipo
 
     * **Ejemplo de petición**
 
         .. host:: http
 
-            GET /api/cars HTTP/1.1 
+            POST /api/users/signup/
+            Content-Type: json
+
+            {
+                "username": "usuarioreal",
+                "password": "contraseñausuarioreal",
+                "password_confirmation": "contraseñausuarioreal",
+                "fecha_nacimiento": "2000-01-22",
+                "email": "usuarioreal@realidad.com"
+            }
+
+    * **Ejemplos de respuesta** 
+
+        .. host:: http
+
+            HTTP/1.1 201 CREATED
+            Content-Type: json
+
+            {
+                "username": "usuarioreal",
+                "last_login": null,
+                "email": "usuarioreal@realidad.com",
+                "fecha_registro": "2021-09-18",
+                "fecha_nacimiento": "2000-01-22",
+                "institucion_educativa": null,
+                "idiomas": null,
+                "ubicacion": null,
+                "facebookurl": null,
+                "twitterurl": null,
+                "youtubeurl": null,
+                "adulto": false,
+                "foto_perfil": null
+            }
+
+            HTTP/1.1 400 BAD_REQUEST
+            Content-Type: json
+
+            {
+                "username": [
+                    "Este campo debe ser único."
+                ],
+                "email": [
+                    "Este campo debe ser único."
+                ]
+            }  
+
+Recurso WATCH
+-------------
+
+    .. http:get:: /api/users/watch/?username=<username>
+
+    Ve la información de un usuario
+
+    * **Campos olbigatorios**
+
+        :username: **(string)** Nombre de usuario a consultar
+
+    * **Ejemplo de petición**
+
+        .. host:: http
+
+            GET /api/users/watch/?username=usuarioreal
             Content-Type: None
+            Parameters: username=usuarioreal
 
-    * **Ejemplos de respuestas**
-
-        .. host:: http
-
-             HTTP/1.1 200 OK
-             Content-Type: json
-             {
-                "data": [
-                            {
-                                "id": 7,
-                                "number_plate": "NPE112",
-                                "model": "2002",
-                                "branch": "Chevrolet",
-                                "usuario": 5
-                            }
-                    ]
-            }
-
-Recurso DELETE
---------------
-
-    ..http:delete:: /api/cars?id=<pk>
-
-    Elimina un carro
-
-    * **Ejemplo de petición**
-        .. **Campos Obligatorios**
-
-            :id: **(int)** Id del carro
-
-    * **Ejemplo de petición**
-
-        .. host:: http
-
-            DELETE /api/cars?id=1 HTTP/1.1
-            Params
-
-            id: 2
-
-    * **Ejemplos de respuesta**
+    * **Ejemplos de respuesta** 
 
         .. host:: http
 
             HTTP/1.1 200 OK
-            {
-                "Success": "Carro eliminado"
-            }
-
-            HTTP/1.1 400 BAD_REQUEST
-            {
-                "Error": "Id no válida"
-            }
-
-Recurso PATCH
-------------
-    .. http:patch:: /api/cars
-
-    Actualiza un carro
-
-    * **Campos obligatorios**
-
-        :id: **(id)** Placa del carro
-
-    * **Campos opcionales** 
-        :model: **(string)** Modelo del carro
-        :branch: **(string)** Marca del carro
-        :usuario: **(int)** Id del propietario del carro
-
-    * **Ejemplo de petición**
-
-        ..host:: http
-
-            POST /api/cars
-            Params id:5
             Content-Type: json
 
             {
-                "number_plate": "NPE112",
-                "model": "2022",
-                "branch": "Chevrolet",
-                "usuario": 5
+                "username": "usuarioreal",
+                "last_login": "2021-09-18",
+                "email": "usuarioreal@realidad.com",
+                "fecha_registro": "2021-09-18",
+                "fecha_nacimiento": "2000-01-22",
+                "institucion_educativa": null,
+                "idiomas": null,
+                "ubicacion": null,
+                "facebookurl": null,
+                "twitterurl": null,
+                "youtubeurl": null,
+                "adulto": true,
+                "foto_perfil": null
             }
 
-    * **Ejemplos de respuestas**
+            HTTP/1.1 301 REDIRECT
+            HTTP/1.1 200 OK
+            Content-Type: json
 
-        ..host:: http
-
-            HTTP/1.1 202 CREATED
-            Content-Type: None
+            {
+                "username": "usuarioreal",
+                "last_login": "2021-09-18",
+                "email": "usuarioreal@realidad.com",
+                "fecha_registro": "2021-09-18",
+                "fecha_nacimiento": "2000-01-22",
+                "institucion_educativa": null,
+                "idiomas": null,
+                "ubicacion": null,
+                "facebookurl": null,
+                "twitterurl": null,
+                "youtubeurl": null,
+                "adulto": true,
+                "foto_perfil": null
+            }
 
             HTTP/1.1 400 BAD_REQUEST
             Content-Type: json
-            {
-                "errors": {
-                    "number_plate": [
-                        "required field"
-                    ],
-                    "model": [
-                        "required field"
-                    ],
-                    "branch": [
-                        "required field"
-                    ],
-                    "usuario": [
-                        "required field"
-                    ]
-                }
-            }
 
+            {
+                "Error": "Username inválido"
+            }    
 
 :status 200: Petición completada
-:status 201: Usuario creado
-:status 202: Petición de actualización aceptada
+:status 201: Usuario o token creado
+:status 301: Redirigido debido a una solicitud de watch mal formateada
 :status 400: Valores inválidos
