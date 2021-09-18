@@ -1,94 +1,188 @@
-Recurso Usuarios
-================
-
-POST
-----
-    Éste método permite la creación de carros
-
-    .. http:post:: /api/cars
-
-    * **Campos obligatorios**
-        
-        :number_plate: **(string)** Placa del carro ingresado
-        :model: **(string)** Modelo del carro
- 
-
 ========================
-    Recurso empresas
+    Recurso carros
 ========================
 
 Recurso POST
 ------------
+    .. http:post:: /api/cars
 
-    .. http:post:: /api/v1/enterprise
+    Crea un carro
 
-    Crea una empresa en la plataforma
+    * **Campos obligatorios**
 
-    * **Campos Obligatorios**
-
-        :name: **(string)** Nombre de la empresa
-        :nit: **(string)** Nit de la empresa
-        :email: **(string)** Correo de la empresa
-        :password: **(string)** Contraseña de la empresa. Tamaño mínimo de 7 caracteres
-        :state: **(string)** Departamento
-        :city: **(string)** Ciudad
-        :address: **(string)** Direccion. Se permite una string que contenga la direccion de residencia
-        :module: **(list)** Modulos que tiene la empresa comprados de nuestro servicio
-        
-    * **Formatos**
-
-        - module: EM, RM, PM, AM
+        :number_plate: **(string)** Placa del carro
+        :model: **(string)** Modelo del carro
+        :branch: **(string)** Marca del carro
+        :usuario: **(int)** Id del propietario del carro
 
     * **Ejemplo de petición**
 
-        .. sourcecode:: http
+        ..host:: http
 
-            POST /api/v1/enterprise HTTP/1.1
-            Content-Type: application/json
+            POST /api/cars
+            Content-Type: json
 
             {
-                "name": "Cuarentino",
-                "nit": "1234567894",
-                "email": "micorreo@correo.com",
-                "password": "MiContraseña!*",
-                "state": "Risaralda",
-                "city": "Pereira",
-                "address": "Calle 80 #32 - 29",
-                "module": []
+                "number_plate": "NPE112",
+                "model": "2002",
+                "branch": "Chevrolet",
+                "usuario": 5
             }
 
-    * **Ejemplos de respuesta**
+    * **Ejemplos de respuestas**
 
-        .. sourcecode:: http
+        ..host:: http
 
             HTTP/1.1 201 CREATED
+            Content-Type: json
             {
-                "inserted":1
+                "Success": "Carro creado"
             }
 
-        .. sourcecode:: http
-
             HTTP/1.1 400 BAD_REQUEST
-            Content-Type: application/json
-
+            Content-Type: json
             {
-                "code": "invalid_body",
-                "detail": "Cuerpo con estructura inválida",
-                "data": {
-                    "gender": [
-                        "Este campo es requerido."
+                "errors": {
+                    "branch": [
+                        "required field"
+                    ],
+                    "model": [
+                        "required field"
+                    ],
+                    "number_plate": [
+                        "required field"
+                    ],
+                    "usuario": [
+                        "required field"
                     ]
                 }
             }
 
-        .. sourcecode:: http
+Recurso GET
+-----------
 
-            HTTP/1.1 409 CONFLICT
-            {
-                "code": "user_already_exist",
-                "detailed": "El usuario ya existe en la base de datos"
+    ..http:get:: /api/cars
+
+    Recibe los carros que hay registrados
+
+    * **Ejemplo de petición**
+
+        .. host:: http
+
+            GET /api/cars HTTP/1.1 
+            Content-Type: None
+
+    * **Ejemplos de respuestas**
+
+        .. host:: http
+
+             HTTP/1.1 200 OK
+             Content-Type: json
+             {
+                "data": [
+                            {
+                                "id": 7,
+                                "number_plate": "NPE112",
+                                "model": "2002",
+                                "branch": "Chevrolet",
+                                "usuario": 5
+                            }
+                    ]
             }
 
-    :status 201: Empresa creado
-    :status 400: Cuerpo con estructura inválida
-    :status 409: La empresa ya existe
+Recurso DELETE
+--------------
+
+    ..http:delete:: /api/cars?id=<pk>
+
+    Elimina un carro
+
+    * **Ejemplo de petición**
+        .. **Campos Obligatorios**
+
+            :id: **(int)** Id del carro
+
+    * **Ejemplo de petición**
+
+        .. host:: http
+
+            DELETE /api/cars?id=1 HTTP/1.1
+            Params
+
+            id: 2
+
+    * **Ejemplos de respuesta**
+
+        .. host:: http
+
+            HTTP/1.1 200 OK
+            {
+                "Success": "Carro eliminado"
+            }
+
+            HTTP/1.1 400 BAD_REQUEST
+            {
+                "Error": "Id no válida"
+            }
+
+Recurso PATCH
+------------
+    .. http:patch:: /api/cars
+
+    Actualiza un carro
+
+    * **Campos obligatorios**
+
+        :id: **(id)** Placa del carro
+
+    * **Campos opcionales** 
+        :model: **(string)** Modelo del carro
+        :branch: **(string)** Marca del carro
+        :usuario: **(int)** Id del propietario del carro
+
+    * **Ejemplo de petición**
+
+        ..host:: http
+
+            POST /api/cars
+            Params id:5
+            Content-Type: json
+
+            {
+                "number_plate": "NPE112",
+                "model": "2022",
+                "branch": "Chevrolet",
+                "usuario": 5
+            }
+
+    * **Ejemplos de respuestas**
+
+        ..host:: http
+
+            HTTP/1.1 202 CREATED
+            Content-Type: None
+
+            HTTP/1.1 400 BAD_REQUEST
+            Content-Type: json
+            {
+                "errors": {
+                    "number_plate": [
+                        "required field"
+                    ],
+                    "model": [
+                        "required field"
+                    ],
+                    "branch": [
+                        "required field"
+                    ],
+                    "usuario": [
+                        "required field"
+                    ]
+                }
+            }
+
+
+:status 200: Petición completada
+:status 201: Usuario creado
+:status 202: Petición de actualización aceptada
+:status 400: Valores inválidos
